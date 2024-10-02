@@ -1,10 +1,10 @@
 # Project Title: Steam Games Recommendation System With Deep Learning
 
 ## Overview
-This project involves building a machine learning model to predict house prices based on various features such as location, square footage, number of bedrooms, and amenities. The primary goal was to create an accurate and efficient model that can assist potential buyers and sellers in understanding property values.
+This project involves building a deep-learning model to predict game like by user on various features such as game overall rating, game average hour played, user total hour played, many others. The primary goal was to create an recommendation system model that can assist company to recommend games on the basis of user behaviour.
 
 ## Problem Statement
-Real estate prices can fluctuate significantly based on various factors. Accurately predicting house prices helps stakeholders make informed decisions. This project explores a dataset to identify patterns and build a predictive model.
+In these day with the growth of deep-learning, it's essential to improve recommendation system from traditional approach to deep learning approach.
 
 ## Dataset
 I used the [Steam Games, Reviews, and Rankings.t](https://www.kaggle.com/datasets/mohamedtarek01234/steam-games-reviews-and-rankings), which includes:

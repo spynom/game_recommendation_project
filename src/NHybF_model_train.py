@@ -5,29 +5,36 @@ import torch.optim as optim
 import matplotlib.pyplot as plt
 import torch.nn.functional as F
 import json
-
+# check cuda availability
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+# set randomness for reproducibility
 np.random.seed(34)
 torch.manual_seed(57)
 
-
+# architecture of NHybF
 class NHybF(nn.Module):
     def __init__(self, num_items,num_users, items_embedding_dim,users_embedding_dim,gmf_embedding_dim,hidden_layers_size=(50,50,50,50),dropout_prob=(0.25,0.25,0.25,0.25),output_size=1):
         super(NHybF,self).__init__()
+
+
         # HybMLP architecture part
-        self.item_embedding = nn.Embedding(num_embeddings=num_items,embedding_dim=items_embedding_dim)
-        self.user_embedding = nn.Embedding(num_embeddings=num_users,embedding_dim=users_embedding_dim)
+        self.item_embedding = nn.Embedding(num_embeddings=num_items,embedding_dim=items_embedding_dim)# items embedding layer
+
+        self.user_embedding = nn.Embedding(num_embeddings=num_users,embedding_dim=users_embedding_dim) # items embedding layer
+
+        # hidden layer 1
         self.hidden_layer1 = nn.Linear(in_features=items_embedding_dim+users_embedding_dim+358, out_features=hidden_layers_size[0])
         self.dropout1 = nn.Dropout(dropout_prob[0])
+        # hidden layer 2
         self.hidden_layer2=nn.Linear(in_features=hidden_layers_size[0],out_features=hidden_layers_size[1])
         self.dropout2 = nn.Dropout(dropout_prob[1])
-
+        # hidden layer 3
         self.hidden_layer3=nn.Linear(in_features=hidden_layers_size[1],out_features=hidden_layers_size[2])
         self.dropout3 = nn.Dropout(dropout_prob[2])
-
+        # hidden layer 4
         self.hidden_layer4=nn.Linear(in_features=hidden_layers_size[2],out_features=hidden_layers_size[3])
         self.dropout4 = nn.Dropout(dropout_prob[3])
-
+        # output layer of HyMLP
         self.HybMLP_output_layer = nn.Linear(in_features=hidden_layers_size[3],out_features=output_size)
 
 

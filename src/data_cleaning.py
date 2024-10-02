@@ -1,30 +1,34 @@
+# Import Libraries
 import pandas as pd
 import numpy as np
 import os
 from sklearn.preprocessing import LabelEncoder
 import ast
+
 # Load data function
 def read_data(file_name:str,low_memory=True)->pd.DataFrame:
     if os.getcwd().split('/')[-1] == 'src':
-        path = os.path.join("..","data",file_name)
+        path = os.path.join("..","data",file_name) # file path
     else:
         path = os.path.join("data",file_name)
-    return pd.read_csv(path,low_memory=low_memory)
+    return pd.read_csv(path,low_memory=low_memory) # return dataset
 
+# steam_game_review dataset clean function
 def steam_game_reviews_clean(df: pd.DataFrame) -> pd.DataFrame:
     df=df.assign(
-        hours_played=df.hours_played.str.replace(r"[^.0-9]","",regex=True).astype(float).astype(int),
+        hours_played=df.hours_played.str.replace(r"[^.0-9]","",regex=True).astype(float).astype(int), # extracting total hour played as number
         helpful=df.helpful.str.replace(r"[^0-9]","",regex=True).astype(int),
         funny=df.funny.str.replace(r"[^0-9]","",regex=True).astype(int),
         username=df.username.str.split("\n").str.get(0).str.replace("!","").str.strip()
 
-    ).drop(columns=["date"])
-    df=df[~(df.username.isnull())&~(df.username=="")&~(df.username==".")]
+    ).drop(columns=["date"]) # dropping date column
+    df=df[~(df.username.isnull())&~(df.username=="")&~(df.username==".")] # applying filter to keep only genuine users
 
     return df
 
+# define function to clean games_description_clean dataset
 def games_description_clean(df:pd.DataFrame)->pd.DataFrame:
-    df=df.copy()
+    df=df.copy() # making a copy of dataframe so it won't make change in original
 
     df.loc[df[~df.number_of_reviews_from_purchased_people.str.replace(r"[^A-Za-z0-9]","",regex=True).str.isdigit()].index,["number_of_reviews_from_purchased_people"]]=df[~df.number_of_reviews_from_purchased_people.str.replace(r"[^A-Za-z0-9]","",regex=True).str.isdigit()].number_of_reviews_from_purchased_people.str.split(")").str.get(0).str.split("of ").str.get(1)
 
@@ -32,10 +36,12 @@ def games_description_clean(df:pd.DataFrame)->pd.DataFrame:
 
     df=df.assign(
         genres=df.genres.apply(lambda x: " ".join([y.lower().replace(" ","_").replace("'","").replace("'","") for y in ast.literal_eval(x)])),
-        release_date=df.release_date.str.split(" ").str.get(-1),
+        release_date=df.release_date.str.split(" ").str.get(-1), # extracting only release year data
         number_of_reviews_from_purchased_people=pd.to_numeric(df.number_of_reviews_from_purchased_people.str.replace(r"[^0-9]","",regex=True))
     )
-    return df.rename(columns={"name":"game_name","release_date":"release_year"})
+    return df.rename(columns={"name":"game_name","release_date":"release_year"}) # renaming columns name for further use
+
+# function to add features average hour played in each game and
 def add_features(df:pd.DataFrame):
     df=df.copy()
     return (
@@ -43,6 +49,7 @@ def add_features(df:pd.DataFrame):
     .merge(df.groupby(["user_id"])["hours_played"].mean(), on="user_id").rename(columns={"hours_played":"user_avg_hrs_played"}).drop(columns=["hours_played_x"])
     )
 
+# function to save file
 def save(file_name,df):
     if os.getcwd().split('/')[-1] == 'src':
         path=os.path.join("..","data",f"{file_name}.csv")
@@ -55,9 +62,9 @@ def save(file_name,df):
 
 
 if __name__ == "__main__":
-    games_description=read_data("games_description.csv")
-    steam_game_reviews=read_data("steam_game_reviews.csv",low_memory=False)
-    steam_game_reviews.drop_duplicates(inplace=True)
+    games_description=read_data("games_description.csv")# load games_description
+    steam_game_reviews=read_data("steam_game_reviews.csv",low_memory=False)# load steam_game_review
+    steam_game_reviews.drop_duplicates(inplace=True) # dropping duplicate
     games_description.loc[games_description[games_description.short_description.isnull()].index,"short_description"]=[
         "Cyberpunk 2077 contains strong language, intense violence, blood and gore, as well as nudity and sexual material",
         "This DLC may contain content not appropriate for all ages, or may not be appropriate for viewing at work: Frequent Violence or Gore, General Mature Content ",
@@ -72,7 +79,7 @@ if __name__ == "__main__":
         "",
         "Experience thrilling hockey action in VR! The new Hockey DLC for All In One Sports lets you enjoy the fun of air hockey in a completely new way.",
         "Get ready for the ultimate soccer experience in VR! With the new Soccer DLC for All In One Sports, you can now enjoy soccer like never before."
-    ]
+    ] # filling null values in games description attribute
     games_description=games_description_clean(games_description)
     steam_game_reviews=steam_game_reviews_clean(steam_game_reviews)
     # merge
@@ -93,8 +100,10 @@ if __name__ == "__main__":
     train1=final_data.iloc[repeated_user_index[200000:],:]
     train2=final_data[~final_data["user_id"].duplicated()]
     train=pd.concat([train1,train2],ignore_index=True)
+    # free memory space
     del train1
     del train2
+    # save cleaned files
     save("train",train)
     save("val",val)
     save("test",test)

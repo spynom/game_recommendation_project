@@ -51,6 +51,8 @@ python ./src/feature_engineering.py
 ## 3. **Model Selection**:
 ### GMF: 
 - The Generalized Matrix Factorization (GMF) model is a popular approach for collaborative filtering in recommendation systems. It extends traditional matrix factorization techniques by utilizing deep learning methods to capture complex interactions between users and items.
+  
+![img.png](images/GMF.png)
 
 ``` python
 # you can use this model in building any neural Collaborative Filtering based recommendation system
@@ -86,6 +88,8 @@ python ./src/GMF_model_build_and_train.py
 ```
 ### Hybrid Multi-Layer Perceptron (HyMLP):
 - The Hybrid Multi-Layer Perceptron (HyMLP) model is a powerful approach in recommendation systems that combines collaborative filtering with deep learning techniques. This model is designed to leverage both user-item interactions and item features to make personalized recommendations.
+
+![img.png](images/img_2.png)
 
 ```python
 # Architecture of HybMLP
@@ -157,6 +161,8 @@ python ./src/HybMLP_model_building.py
 ```
 ### NHybf (Neural Hybrid Factorization):
 - NHybf is a recommendation system model that combines neural networks with matrix factorization techniques to improve the effectiveness of collaborative filtering methods. This approach leverages the strengths of both deep learning and traditional factorization methods to enhance the accuracy of predictions in user-item interactions.
+
+![NHybf](notebook/NHybF_architecture.png)
 
 ```python
 # Architecture of NHybf
@@ -230,7 +236,7 @@ python ./src/NHybF_model_train.py
 # it will save trained model's parameters stage in models folder
 
 ```
-### 4. **Model Evaluation**: Used metrics like `ROC Curve`, `Precision Score` and `Confuse Matrix` to evaluate model performance and selected best model.
+### 4. **Model Evaluation**: Used metrics like `ROC Curve`, `Precision Score` and `Confuse Matrix` to evaluate performances of model and selected best model.
 
 **Results**<br>
 The final selected `HybMLP` model achieved on test data:

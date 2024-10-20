@@ -21,9 +21,9 @@ class GMF(nn.Module):
         self.users_embedding = nn.Embedding(users_size,embedding_dim)  # defining users embedding layer
 
     def forward(self,items,users):
-        item_vector = self.items_embedding(items) # item vector the output og embedding layer
+        item_vector = self.items_embedding(items.reshape(-1,1)).squeeze(1) # item vector the output og embedding layer
 
-        user_vector = self.users_embedding(users) # user vector the output og embedding layer
+        user_vector = self.users_embedding(users.reshape(-1,1)).squeeze(1) # user vector the output og embedding layer
 
         mul_vector=user_vector*item_vector # multiplying vectors element wise
         return torch.sigmoid(torch.sum(mul_vector,dim=1)) # applying sigmoid
@@ -33,13 +33,13 @@ GMF_model=GMF(227,666536,50).to(device) # initialize model
 criterion = nn.BCELoss() # setting up loss function
 optimizer = optim.Adam(GMF_model.parameters(), lr=0.001) # setting optimizer
 
-class_0=np.load("data/train_class_0.npy")[:,[0,1,-1]] # loading class 0 contain train file
+class_0=np.load("../data/train_class_0.npy")[:,[0,1,-1]] # loading class 0 contain train file
 class_0=torch.from_numpy(class_0).type(torch.int32) # converting into torch tensor
-class_1=np.load("data/train_class_1.npy")[:,[0,1,-1]] # loading class 1 contain train file
+class_1=np.load("../data/train_class_1.npy")[:,[0,1,-1]] # loading class 1 contain train file
 class_1=torch.from_numpy(class_1).type(torch.int32) # converting into torch tensor
 
-val_class_0=np.load("data/val_class_0.npy")[:,[0,1,-1]] # loading class 0 contain validation file
-val_class_1=np.load("data/val_class_1.npy")[:,[0,1,-1]]  # loading class 1 contain validation file
+val_class_0=np.load("../data/val_class_0.npy")[:,[0,1,-1]] # loading class 0 contain validation file
+val_class_1=np.load("../data/val_class_1.npy")[:,[0,1,-1]]  # loading class 1 contain validation file
 val=torch.from_numpy(np.concatenate([val_class_0,val_class_1],axis=0)).type(torch.int32).to(device) # merging and converting into tensor
 
 epoch_size=20 # size of epoch
@@ -119,8 +119,8 @@ for epoch in range(epoch_size):
 
 
 
-torch.save(GMF_model.state_dict(), 'models/GMF_model.pth') # saving state of model
-with open('reports/GMF_train_report.json', 'w') as f:
+torch.save(GMF_model.state_dict(), '../models/GMF_model.pth') # saving state of model
+with open('../reports/GMF_train_report.json', 'w') as f:
     json.dump(report,f) # saving training report as json file
 
 

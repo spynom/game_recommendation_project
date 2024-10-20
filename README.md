@@ -52,9 +52,7 @@ python ./src/feature_engineering.py
 ## 3. **Model Selection**:
 ### GMF: 
 - The Generalized Matrix Factorization (GMF) model is a popular approach for collaborative filtering in recommendation systems. It extends traditional matrix factorization techniques by utilizing deep learning methods to capture complex interactions between users and items.
-<br>
-![images/GMF.png](https://raw.githubusercontent.com/spynom/game_recommendation_project/refs/heads/main/images/GMF.png)
-<br>
+
 ``` python
 # you can use this model in building any neural Collaborative Filtering based recommendation system
 
@@ -89,9 +87,7 @@ python ./src/GMF_model_build_and_train.py
 ```
 ### Hybrid Multi-Layer Perceptron (HyMLP):
 - The Hybrid Multi-Layer Perceptron (HyMLP) model is a powerful approach in recommendation systems that combines collaborative filtering with deep learning techniques. This model is designed to leverage both user-item interactions and item features to make personalized recommendations.
-<br>
-![img.png](images/img_2.png)
-<br>
+
 ```python
 # Architecture of HybMLP
 import torch
@@ -162,9 +158,7 @@ python ./src/HybMLP_model_building.py
 ```
 ### NHybf (Neural Hybrid Factorization):
 - NHybf is a recommendation system model that combines neural networks with matrix factorization techniques to improve the effectiveness of collaborative filtering methods. This approach leverages the strengths of both deep learning and traditional factorization methods to enhance the accuracy of predictions in user-item interactions.
-<br>
-![NHybf](notebook/NHybF_architecture.png)
-<br>
+
 ```python
 # Architecture of NHybf
 import torch

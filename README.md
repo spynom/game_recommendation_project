@@ -33,7 +33,6 @@ python src\data_cleaning.py
 
 ## 2. **Data Exploration**: 
 - Conducted exploratory data analysis (EDA) to understand the dataset and visualize relationships between features and the target variable.
-<br>
 ![img.png](images/img.png)
 ![img.png](images/img2.png)
 ![img.png](images/img_1.png)

@@ -53,7 +53,7 @@ python ./src/feature_engineering.py
 ### GMF: 
 - The Generalized Matrix Factorization (GMF) model is a popular approach for collaborative filtering in recommendation systems. It extends traditional matrix factorization techniques by utilizing deep learning methods to capture complex interactions between users and items.
 <br>
-![img.png](images/GMF.png)
+![images/GMF.png](https://raw.githubusercontent.com/spynom/game_recommendation_project/refs/heads/main/images/GMF.png)
 <br>
 ``` python
 # you can use this model in building any neural Collaborative Filtering based recommendation system

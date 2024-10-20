@@ -55,7 +55,7 @@ python ./src/feature_engineering.py
 <br>
 ![img.png](images/GMF.png)
 <br>
-```python
+```
 # you can use this model in building any neural Collaborative Filtering based recommendation system
 
 import torch
